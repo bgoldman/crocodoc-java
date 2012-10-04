@@ -41,21 +41,22 @@ class CrocodocSession extends Crocodoc {
      * 
      * @param string
      *            uuid The uuid of the file to create a session for
-     * @param hashtable
-     *            params A hashtable representing: bool 'isEditable' Can users
-     *            create annotations and comments while viewing the document
-     *            with this session key? array 'userInfo' An array with keys
-     *            "id" and "name" representing a user's unique ID and name in
-     *            your application; "id" must be a non-negative signed 32-bit
-     *            integer; this field is required if isEditable is true string
-     *            'filter' Which annotations should be included if any - this is
-     *            usually a string, but could also be an array if it's a
-     *            comma-separated list of user IDs as the filter bool 'isAdmin'
-     *            Can users modify or delete any annotations or comments
-     *            belonging to other users? bool 'isDownloadable' Can users
-     *            download the original document? bool 'isCopyprotected' Can
-     *            text be selected in the document? bool 'isDemo' Should we
-     *            prevent any changes from being persisted?
+     * @param hashtable params A hashtable representing:
+     *     bool 'isEditable' Can users create annotations and comments while
+     *         viewing the document with this session key?
+     *     object 'user' A hashtable with keys "id" and "name" representing a
+     *         user's unique ID and name in your application; "id" must be a
+     *         non-negative signed 32-bit integer; this field is required if
+     *         isEditable is true
+     *     string 'filter' Which annotations should be included if any - this
+     *         is usually a string, but could also be an array if it's a
+     *         comma-separated list of user IDs as the filter
+     *     bool 'isAdmin' Can users modify or delete any annotations or
+     *         comments belonging to other users?
+     *     bool 'isDownloadable' Can users download the original document?
+     *     bool 'isCopyprotected' Can text be selected in the document?
+     *     bool 'isDemo' Should we prevent any changes from being persisted?
+     *     string 'sidebar' Sets if and how the viewer sidebar is included
      * 
      * @return string A unique session key for the document
      * @throws CrocodocException
@@ -71,26 +72,18 @@ class CrocodocSession extends Crocodoc {
 
         if (params.containsKey("isEditable")) {
             Boolean isEditable = (Boolean) params.get("isEditable");
-            postParams.put("editable", isEditable ? 1 : 0);
+            postParams.put("editable", isEditable ? "true" : "false");
+        }
 
-            if (isEditable && params.containsKey("userInfo")
-                    && Map.class.isInstance(params.get("userInfo"))) {
-                @SuppressWarnings("unchecked")
-                Map<String, Object> userInfo = (Map<String, Object>) params
-                        .get("userInfo");
+        if (params.containsKey("user")
+                && Map.class.isInstance(params.get("user"))) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> user = (Map<String, Object>) params.get("user");
 
-                if (!userInfo.containsKey("id")) {
-                    _error("missing_user_id", "CrocodocSession", "create", null);
-                }
-
-                if (!userInfo.containsKey("name")) {
-                    _error("missing_user_name", "CrocodocSession", "create",
-                            null);
-                }
-
-                String user = userInfo.get("id").toString() + ","
-                        + userInfo.get("name").toString();
-                postParams.put("user", user);
+            if (user.containsKey("id") && user.containsKey("name")) {
+                String userString = user.get("id").toString() + ","
+                        + user.get("name").toString();
+                postParams.put("user", userString);
             }
         }
 
@@ -123,21 +116,27 @@ class CrocodocSession extends Crocodoc {
         }
 
         if (params.containsKey("isAdmin")) {
-            postParams.put("admin", (Boolean) params.get("isAdmin"));
+            Boolean isAdmin = (Boolean) params.get("isAdmin");
+            postParams.put("admin", isAdmin ? "true" : "false");
         }
 
         if (params.containsKey("isDownloadable")) {
-            postParams.put("downloadable",
-                    (Boolean) params.get("isDownloadable"));
+            Boolean isDownloadable = (Boolean) params.get("isDownloadable");
+            postParams.put("downloadable", isDownloadable ? "true" : "false");
         }
 
         if (params.containsKey("isCopyprotected")) {
-            postParams.put("copyrighted",
-                    (Boolean) params.get("isCopyprotected"));
+            Boolean isCopyprotected = (Boolean) params.get("isCopyprotected");
+            postParams.put("copyprotected", isCopyprotected ? "true" : "false");
         }
 
         if (params.containsKey("isDemo")) {
-            postParams.put("demo", (Boolean) params.get("isDemo"));
+            Boolean isDemo = (Boolean) params.get("isDemo");
+            postParams.put("demo", isDemo ? "true" : "false");
+        }
+
+        if (params.containsKey("sidebar")) {
+            postParams.put("sidebar", params.get("sidebar").toString());
         }
 
         JSONObject session = (JSONObject) _requestJson(path, "create", null,

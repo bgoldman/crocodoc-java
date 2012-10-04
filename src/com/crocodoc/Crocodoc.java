@@ -75,48 +75,53 @@ public class Crocodoc {
     private static final JSONParser _jsonParser = new JSONParser();
 
     /**
-     * Handle an error. We handle errors by throwing an exception.
+     * Check for HTTP errors in an HttpResponse object
      * 
-     * @param string
-     *            error An error code representing the error
-     *            (use_underscore_separators)
-     * @param string
-     *            client Which API client the error is being called from
-     * @param string
-     *            method Which method the error is being called from
-     * @param object
-     *            response This is a representation of the response, usually
-     *            from JSON, but can also be a string
-     * 
+     * @param response
      * @throws CrocodocException
      */
-    protected static void _error(String error, String client, String method,
-            Object response) throws CrocodocException {
-        String message = "Crocodoc: [" + error + "] " + client + "::" + method
-                + "\n\n";
-        message += JSONValue.toJSONString(response);
-        throw new CrocodocException(message);
+    private static void _checkForHttpErrors(HttpResponse response)
+            throws CrocodocException {
+        Integer httpCode = response.getStatusLine().getStatusCode();
+
+        Map<Integer, String> http4xxErrorCodes = new HashMap<Integer, String>();
+        http4xxErrorCodes.put(400, "bad_request");
+        http4xxErrorCodes.put(401, "unauthorized");
+        http4xxErrorCodes.put(404, "not_found");
+        http4xxErrorCodes.put(405, "method_not_allowed");
+
+        if (http4xxErrorCodes.containsKey(httpCode)) {
+            String error = "server_error_" + httpCode + "_"
+                    + http4xxErrorCodes.get(httpCode);
+            _error(error, "Crocodoc", "_request", null);
+        }
+
+        if (httpCode >= 500 && httpCode < 600) {
+            String error = "server_error_" + httpCode + "_unknown";
+            _error(error, "Crocodoc", "_request", null);
+        }
     }
 
     /**
-     * Make a request to the server and return the response as a string.
+     * Make a request to the server and return an HttpResponse object.
      * 
      * @param string
-     *            path The path on the server relative to the base path
+     *            path The path on the server to make the request to relative to
+     *            the base path
      * @param string
-     *            method The method to call on the server path; appended to the
-     *            server path
+     *            method This is just an addition to the path, for example, in
+     *            "/documents/upload" the method would be "upload"
      * @param object
      *            getParams A key-value pair of GET params
      * @param object
      *            postParams A key-value pair of POST params
      * 
-     * @return The response is an HttpEntity object
+     * @return object The response is an HttpResponse object
      * @throws CrocodocException
      */
-    protected static HttpEntity _request(String path, String method,
-            Map<String, Object> getParams, Map<String, Object> postParams)
-            throws CrocodocException {
+    private static HttpResponse _requestHttpResponse(String path,
+            String method, Map<String, Object> getParams,
+            Map<String, Object> postParams) throws CrocodocException {
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme(protocol);
         uriBuilder.setHost(host);
@@ -178,39 +183,61 @@ public class Crocodoc {
             _error("connection_error", "Crocodoc", "_request", errorParams);
         }
 
-        Integer httpCode = response.getStatusLine().getStatusCode();
-        HttpEntity responseEntity = response.getEntity();
-
-        Map<Integer, String> http4xxErrorCodes = new HashMap<Integer, String>();
-        http4xxErrorCodes.put(400, "bad_request");
-        http4xxErrorCodes.put(401, "unauthorized");
-        http4xxErrorCodes.put(404, "not_found");
-        http4xxErrorCodes.put(405, "method_not_allowed");
-
-        if (http4xxErrorCodes.containsKey(httpCode)) {
-            String error = "server_error_" + httpCode + "_"
-                    + http4xxErrorCodes.get(httpCode);
-            Map<String, Object> errorParams = new HashMap<String, Object>();
-            errorParams.put("url", url);
-            errorParams.put("getParams", getParams);
-            errorParams.put("postParams", postParams);
-            _error(error, "Crocodoc", "_request", errorParams);
-        }
-
-        if (httpCode >= 500 && httpCode < 600) {
-            String error = "server_error_" + httpCode + "_unknown";
-            Map<String, Object> errorParams = new HashMap<String, Object>();
-            errorParams.put("url", url);
-            errorParams.put("getParams", getParams);
-            errorParams.put("postParams", postParams);
-            _error(error, "Crocodoc", "_request", errorParams);
-        }
-
-        return responseEntity;
+        return response;
     }
 
     /**
-     * Make an HTTP request.
+     * Handle an error. We handle errors by throwing an exception.
+     * 
+     * @param string
+     *            error An error code representing the error
+     *            (use_underscore_separators)
+     * @param string
+     *            client Which API client the error is being called from
+     * @param string
+     *            method Which method the error is being called from
+     * @param object
+     *            response This is a representation of the response, usually
+     *            from JSON, but can also be a string
+     * 
+     * @throws CrocodocException
+     */
+    protected static void _error(String error, String client, String method,
+            Object response) throws CrocodocException {
+        String message = "Crocodoc: [" + error + "] " + client + "::" + method
+                + "\n\n";
+        message += JSONValue.toJSONString(response);
+        throw new CrocodocException(message, error);
+    }
+
+    /**
+     * Make an HTTP request and return an HTTPEntity object.
+     * 
+     * @param string
+     *            path The path on the server to make the request to relative to
+     *            the base path
+     * @param string
+     *            method This is just an addition to the path, for example, in
+     *            "/documents/upload" the method would be "upload"
+     * @param object
+     *            getParams A key-value pair of GET params
+     * @param object
+     *            postParams A key-value pair of POST params
+     * 
+     * @return HTTPEntity The response is an object converted from JSON
+     * @throws CrocodocException
+     */
+    protected static HttpEntity _requestHttpEntity(String path, String method,
+            Map<String, Object> getParams, Map<String, Object> postParams)
+            throws CrocodocException {
+        HttpResponse response = _requestHttpResponse(path, method, getParams,
+                postParams);
+        _checkForHttpErrors(response);
+        return response.getEntity();
+    }
+
+    /**
+     * Make an HTTP request and return JSON.
      * 
      * @param string
      *            path The path on the server to make the request to relative to
@@ -229,8 +256,9 @@ public class Crocodoc {
     protected static Object _requestJson(String path, String method,
             Map<String, Object> getParams, Map<String, Object> postParams)
             throws CrocodocException {
-        HttpEntity responseEntity = (HttpEntity) _request(path, method,
-                getParams, postParams);
+        HttpResponse response = _requestHttpResponse(path, method, getParams,
+                postParams);
+        HttpEntity responseEntity = response.getEntity();
         String result = "";
 
         try {
@@ -269,13 +297,14 @@ public class Crocodoc {
         JSONObject jsonObject = (JSONObject) json;
 
         if (jsonObject.containsKey("error")) {
+            String error = jsonObject.get("error").toString();
             Map<String, Object> errorParams = new HashMap<String, Object>();
-            errorParams.put("error", jsonObject.get("error").toString());
             errorParams.put("getParams", getParams);
             errorParams.put("postParams", postParams);
-            _error("server_error", "Crocodoc", "_error", errorParams);
+            _error(error, "Crocodoc", "_error", errorParams);
         }
 
+        _checkForHttpErrors(response);
         return jsonObject;
     }
 

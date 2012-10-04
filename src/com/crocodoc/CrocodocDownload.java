@@ -115,18 +115,19 @@ class CrocodocDownload extends Crocodoc {
         getParams.put("uuid", uuid);
 
         if (isPdf) {
-            getParams.put("pdf", true);
+            getParams.put("pdf", "true");
         }
 
         if (isAnnotated) {
-            getParams.put("annotated", true);
-
-            if (filter != null && filter.length() > 0) {
-                getParams.put("filter", filter);
-            }
+            getParams.put("annotated", "true");
         }
 
-        return (HttpEntity) _request(path, "document", getParams, null);
+        if (filter != null && filter.length() > 0) {
+            getParams.put("filter", filter);
+        }
+
+        return (HttpEntity) _requestHttpEntity(path, "document", getParams,
+                null);
     }
 
     /**
@@ -141,7 +142,7 @@ class CrocodocDownload extends Crocodoc {
     public static HttpEntity text(String uuid) throws CrocodocException {
         Map<String, Object> getParams = new HashMap<String, Object>();
         getParams.put("uuid", uuid);
-        return (HttpEntity) _request(path, "text", getParams, null);
+        return (HttpEntity) _requestHttpEntity(path, "text", getParams, null);
     }
 
     /**
@@ -177,7 +178,8 @@ class CrocodocDownload extends Crocodoc {
             getParams.put("size", size);
         }
 
-        return (HttpEntity) _request(path, "thumbnail", getParams, null);
+        return (HttpEntity) _requestHttpEntity(path, "thumbnail", getParams,
+                null);
     }
 
     /**
