@@ -12,7 +12,7 @@ public class CrocodocException extends Exception {
      * 
      * @var code
      */
-    private static String code = null;
+    private String code = null;
 
     /**
      * The constructor function for CrocodocException
