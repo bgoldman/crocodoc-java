@@ -48,6 +48,7 @@ public class CrocodocExamples {
             System.out.println("  UUID is " + uuid);
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
 
@@ -81,6 +82,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -104,6 +106,7 @@ public class CrocodocExamples {
             System.out.println("  UUID is " + uuid);
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
 
@@ -163,6 +166,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -230,6 +234,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -255,6 +260,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -271,7 +277,7 @@ public class CrocodocExamples {
 
         try {
             HttpEntity fileContent = CrocodocDownload.document(uuid2);
-            String filename = "./example-files/original.pdf";
+            String filename = "./example-files/test-original.pdf";
             FileOutputStream stream = null;
 
             try {
@@ -293,6 +299,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -332,6 +339,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -371,6 +379,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -410,6 +419,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -450,6 +460,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -489,6 +500,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -512,6 +524,7 @@ public class CrocodocExamples {
             System.out.println("  The session key is " + sessionKey + ".");
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -547,6 +560,7 @@ public class CrocodocExamples {
             System.out.println("  The session key is " + sessionKey + ".");
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
@@ -572,6 +586,7 @@ public class CrocodocExamples {
             }
         } catch (CrocodocException e) {
             System.out.println("failed :(");
+            System.out.println("  Error Code: " + e.getCode());
             System.out.println("  Error Message: " + e.getMessage());
         }
     }
