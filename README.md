@@ -178,6 +178,7 @@ This function returns a session key.
 	params.put("isDownloadable", true);
 	params.put("isCopyprotected", false);
 	params.put("isDemo", false);
+	params.put("sidebar", "visible");
     String sessionKey = CrocodocSession.create(uuid, params);
     
 ## Support
