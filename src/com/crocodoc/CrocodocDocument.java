@@ -43,8 +43,8 @@ public class CrocodocDocument extends Crocodoc {
      * @param string
      *            uuid The uuid of the file to check the status of
      * 
-     * @return array An array of the uuid, status, and viewable bool, or an
-     *         array of the uuid and an error
+     * @return map A map of the uuid, status, and viewable bool, or a
+     *         map of the uuid and an error
      * @throws CrocodocException
      */
     public static Map<String, Object> status(String uuid)
@@ -70,8 +70,8 @@ public class CrocodocDocument extends Crocodoc {
      * @param array
      *            uuids An array of the uuids of the file to check the status of
      * 
-     * @return array An array of the uuid, status, and viewable bool, or an
-     *         array of the uuid and an error
+     * @return array An array of maps of the uuid, status, and viewable bool, or an
+     *         array of maps of the uuid and an error
      * @throws CrocodocException
      */
     public static ArrayList<Map<String, Object>> status(ArrayList<String> uuids)

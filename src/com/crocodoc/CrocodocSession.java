@@ -41,10 +41,10 @@ class CrocodocSession extends Crocodoc {
      * 
      * @param string
      *            uuid The uuid of the file to create a session for
-     * @param hashtable params A hashtable representing:
+     * @param map params A map representing:
      *     bool 'isEditable' Can users create annotations and comments while
      *         viewing the document with this session key?
-     *     object 'user' A hashtable with keys "id" and "name" representing a
+     *     object 'user' A map with keys "id" and "name" representing a
      *         user's unique ID and name in your application; "id" must be a
      *         non-negative signed 32-bit integer; this field is required if
      *         isEditable is true
