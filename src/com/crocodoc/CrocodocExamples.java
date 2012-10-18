@@ -90,8 +90,8 @@ public class CrocodocExamples {
     /*
      * Example #3
      * 
-     * Upload another file to Crocodoc. We're uploading Crocodoc's logo as a
-     * file.
+     * Upload another file to Crocodoc. We're uploading Form W4 from the IRS as
+     * a PDF.
      */
     public static String example3() {
         System.out.println();
@@ -387,7 +387,7 @@ public class CrocodocExamples {
     /*
      * Example #10
      * 
-     * Download the file we uploaded from Example #3 with as a default thumbnail
+     * Download the file we uploaded from Example #3 as a default thumbnail
      */
     public static void example10(String uuid2) {
         System.out.println();
@@ -427,7 +427,7 @@ public class CrocodocExamples {
     /*
      * Example #11
      * 
-     * Download the file we uploaded from Example #3 with as a large thumbnail
+     * Download the file we uploaded from Example #3 as a large thumbnail
      */
     public static void example11(String uuid2) {
         System.out.println();
