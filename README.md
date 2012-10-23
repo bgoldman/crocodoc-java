@@ -2,7 +2,7 @@
 
 ## Introduction
 
-crocodoc-java is a Java Wrapper for the Crocodoc API.
+crocodoc-java is a Java wrapper for the Crocodoc API.
 The Crocodoc API lets you upload documents and then generate secure and customized viewing sessions for them.
 Our API is based on REST principles and generally returns JSON encoded responses,
 and in Java are converted to Maps and Lists unless otherwise noted.
