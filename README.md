@@ -10,7 +10,7 @@ and in Java are converted to Maps and Lists unless otherwise noted.
 ## Installation
 
 First, get the library.
-You can download the JAR here: https://github.com/downloads/crocodoc/crocodoc-java/crocodoc.jar
+You can download the JAR here: http://web.crocodoc.com/downloads/crocodoc.jar
 
 Add crocodoc.jar to your classpath.
 	
