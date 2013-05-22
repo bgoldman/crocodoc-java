@@ -11,7 +11,7 @@ import org.apache.http.HttpEntity;
  * downloading an original of a document, a PDF of a document, a thumbnail of a
  * document, and text extracted from a document.
  */
-class CrocodocDownload extends Crocodoc {
+public class CrocodocDownload extends Crocodoc {
     /**
      * The Download API path relative to the base API path
      * 

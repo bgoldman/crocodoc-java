@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
  * create sessions for specific documents that can be used to view a document
  * using a specific session-based URL.
  */
-class CrocodocSession extends Crocodoc {
+public class CrocodocSession extends Crocodoc {
     /**
      * The Download API path relative to the base API path
      * 
